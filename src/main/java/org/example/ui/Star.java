@@ -15,7 +15,9 @@ public class Star implements Drawable{
     private float maxBrightness;
     private float brightnessDirection;
 
-    public Star(double x, double y, Random random) {
+    private Random random = new Random();
+
+    public Star(double x, double y) {
         this.x = x;
         this.y = y;
 

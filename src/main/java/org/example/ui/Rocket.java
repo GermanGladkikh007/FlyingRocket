@@ -11,6 +11,7 @@ public class Rocket implements Drawable {
     private double x1;
     private double x2;
     private double y0;
+    private double x0;
     private double radius;
     private double y1;
     private double y2;
@@ -23,11 +24,12 @@ public class Rocket implements Drawable {
     private double rocketDirection = -1;
 
 
-    public Rocket() {
-        y0 = 400;
-        x1 = 200 - 10;
-        x2 = 600 + 10;
-        radius = 250;
+    public Rocket(double y0, double x0, double radius) {
+        this.y0 = y0;
+        this.x0 = x0;
+        x1 = x0/2 - x0 * 0.02;
+        x2 = x0 + x0/2 + x0 * 0.02;
+        this.radius = radius;
 
         y1 = y0 - Math.sqrt(4 * radius * radius - (x2-x1)*(x2-x1)) / 2; // координата кончика ракеты
         y2 = y0 + Math.sqrt(4 * radius * radius - (x2-x1)*(x2-x1)) / 3.8; // координата низа корпуса
@@ -289,6 +291,7 @@ public class Rocket implements Drawable {
         }
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         Graphics2D g = (Graphics2D) g2.create();
 
@@ -306,7 +309,7 @@ public class Rocket implements Drawable {
         drawWindow(g);
 
         AffineTransform oldTransform = g.getTransform();
-        g.translate(2 * 400, 0);
+        g.translate(2 * x0, 0);
         g.scale(-1, 1);
         drawWing(g); // зеркальное крыло
         g.setTransform(oldTransform);
