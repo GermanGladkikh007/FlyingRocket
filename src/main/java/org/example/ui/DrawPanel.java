@@ -10,11 +10,25 @@ public class DrawPanel extends JPanel {
     private Moon moon;
     private Rocket rocket;
     private ArrayList<Star> stars = new ArrayList<>();
+    private Planet mars;
+    private RingPlanet saturn;
     private boolean starsGenerated = false;
+
 
     public DrawPanel(){
         moon = new Moon(600,100,100);
         rocket = new Rocket();
+        mars = new Planet(
+                300, 200, 40,
+                new Color(190, 80, 60)
+        );
+
+        saturn = new RingPlanet(
+                150, 400, 50,
+                new Color(220, 190, 130), // Цвет планеты
+                new Color(120, 160, 190)  // Цвет кольца
+        );
+
 
         Timer timer = new Timer(40, e -> {
             rocket.updateFlame();
@@ -22,11 +36,13 @@ public class DrawPanel extends JPanel {
 
             for (Star star : stars) {
                 star.update();
+                star.move(0.3, getWidth(),getHeight());
             }
 
+            mars.updateGlow();
+            saturn.updateGlow();
             repaint();
         });
-
         timer.start();
 
     }
@@ -72,18 +88,18 @@ public class DrawPanel extends JPanel {
 
         // Рисуем звёзды поверх фона
         for (Star star : stars) {
-            star.draw(g2);
+            Graphics2D starGraphics = (Graphics2D) g2.create();
+            star.draw(starGraphics);
+
+            starGraphics.dispose();
         }
 
-        Planet mars = new Planet(
-                300, 200, 40,
-                new Color(190, 80, 60)
-        );
+
 
         moon.draw(g2);
         rocket.draw(g2);
         mars.draw(g2);
-
+        saturn.draw(g2);
 
 
 

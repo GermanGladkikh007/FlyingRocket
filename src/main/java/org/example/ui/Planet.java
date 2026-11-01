@@ -8,6 +8,8 @@ public class Planet implements Drawable{
     protected double x, y;
     protected int radius;
     protected Color color;
+    protected float glowIntensity = 0.5f;
+    protected float glowDirection = 1;
 
     public Planet(double x, double y, int radius, Color color) {
         this.x = x;
@@ -16,7 +18,17 @@ public class Planet implements Drawable{
         this.color = color;
     }
 
+    public void updateGlow() {
+        glowIntensity += glowDirection * 0.025f;
 
+        if (glowIntensity >= 1.0f) {
+            glowIntensity = 1.0f;
+            glowDirection = -1;
+        } else if (glowIntensity <= 0.35f) {
+            glowIntensity = 0.35f;
+            glowDirection = 1;
+        }
+    }
     @Override
     public void draw(Graphics2D g2) {
         Graphics2D g = (Graphics2D) g2.create();
@@ -24,6 +36,44 @@ public class Planet implements Drawable{
         float px = (float) (x - radius);
         float py = (float) (y - radius);
         float diameter = radius * 2;
+
+
+        // Динамическое свечение
+        int alpha = (int)(glowIntensity * 150);
+
+        RadialGradientPaint glow = new RadialGradientPaint(
+                new Point((int)x, (int)y),
+                radius * 2.2f,
+                new float[]{0.0f, 0.5f, 1.0f},
+                new Color[]{
+                        new Color(
+                                color.getRed(),
+                                color.getGreen(),
+                                color.getBlue(),
+                                alpha
+                        ),
+                        new Color(
+                                color.getRed(),
+                                color.getGreen(),
+                                color.getBlue(),
+                                alpha / 2
+                        ),
+                        new Color(
+                                color.getRed(),
+                                color.getGreen(),
+                                color.getBlue(),
+                                0
+                        )
+                }
+        );
+
+        g.setPaint(glow);
+        g.fillOval(
+                (int)(x - radius * 2.2),
+                (int)(y - radius * 2.2),
+                (int)(radius * 4.4),
+                (int)(radius * 4.4)
+        );
 
         // Основной градиент: свет сверху слева, тень снизу справа
         RadialGradientPaint gradient = new RadialGradientPaint(

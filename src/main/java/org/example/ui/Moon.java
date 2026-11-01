@@ -49,6 +49,7 @@ public class Moon implements Drawable {
         );
 
 
+
         g2.setColor(new Color(220,220,210));
         g2.fillOval(x, y, radius, radius);
 
@@ -89,6 +90,9 @@ public class Moon implements Drawable {
                 radius / 12,
                 radius / 12
         );
+
+
+
 
     }
 }

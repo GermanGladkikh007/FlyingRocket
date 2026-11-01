@@ -31,6 +31,17 @@ public class Star implements Drawable{
         brightnessDirection = random.nextBoolean() ? 1 : -1;
     }
 
+    public void move(double speed, int panelWidth, int panelHeight) {
+        y += speed;
+
+        if (y > panelHeight) {
+            Random random = new Random();
+
+            y = -size;
+            x = random.nextInt(Math.max(1, panelWidth));
+        }
+    }
+
     @Override
     public void draw(Graphics2D g2) {
         int value = (int) (255 * brightness);
